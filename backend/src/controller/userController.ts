@@ -39,11 +39,11 @@ export const updateUser = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteUser = async (req: Request, res: Response) => {
-  try {
-    await userService.deleteUser(Number(req.params.id));
-    res.status(204).send();
-  } catch (error) {
-    res.status(500).json({ error: 'Error al eliminar usuario' });
-  }
-};
+// export const deleteUser = async (req: Request, res: Response) => {
+//   try {
+//     await userService.deleteUser(Number(req.params.id));
+//     res.status(204).send();
+//   } catch (error) {
+//     res.status(500).json({ error: 'Error al eliminar usuario' });
+//   }
+// };

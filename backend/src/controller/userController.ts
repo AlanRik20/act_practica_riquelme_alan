@@ -10,6 +10,16 @@ export const createUser = async (req: Request, res: Response) => {
   }
 };
 
+export const getUserByEmail = async (req: Request, res: Response) => {
+  try {
+    const user = await userService.getUserByEmail(String(req.body.email));
+    if (!user) return res.status(404).json({ error: 'Usuario no encontrado' });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener usuario' });
+  }
+};
+
 export const getUsers = async (_req: Request, res: Response) => {
   try {
     const users = await userService.getUsers();
@@ -30,6 +40,7 @@ export const getUserById = async (req: Request, res: Response) => {
   }
 };
 
+
 export const updateUser = async (req: Request, res: Response) => {
   try {
     const user = await userService.updateUser(Number(req.params.id), req.body);
@@ -39,11 +50,12 @@ export const updateUser = async (req: Request, res: Response) => {
   }
 };
 
-// export const deleteUser = async (req: Request, res: Response) => {
-//   try {
-//     await userService.deleteUser(Number(req.params.id));
-//     res.status(204).send();
-//   } catch (error) {
-//     res.status(500).json({ error: 'Error al eliminar usuario' });
-//   }
-// };
+export const deleteUser = async (req: Request, res: Response) => {
+  try {
+    await userService.deleteUser(Number(req.params.id));
+    res.status(204).send();
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ error: 'Error al eliminar usuario' });
+  }
+};

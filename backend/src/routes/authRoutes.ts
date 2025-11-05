@@ -1,11 +1,11 @@
-// src/routes/authRoutes.ts
+import { Router } from "express";
 
-import { Router } from 'express';
-
-import * as authController from '../controller/authController'
+import { login, register } from "../controller/authController";
 const authRoutes = Router();
 
-authRoutes.post('/register', authController.register);
-authRoutes.post('/login', authController.login);
+import { validateLogin, validateRegistration } from "../middleware/validator";
+
+authRoutes.post("/register", validateRegistration(), register);
+authRoutes.post("/login", validateLogin(), login);
 
 export default authRoutes;

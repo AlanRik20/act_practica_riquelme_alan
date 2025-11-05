@@ -1,4 +1,4 @@
-import pool from "../db";
+import pool from "../database/db";
 import { User } from "../models/IUser";
 
 export const createUser = async (data: Partial<User>): Promise<User | any> => {
@@ -78,4 +78,19 @@ try {
 
 export const deleteUser = async (id: number): Promise<void> => {
   await pool.query('DELETE FROM usuarios WHERE id_usuario = $1', [id]);
+};
+
+export const checkEmailExists = async (email: string): Promise<boolean> => {
+  try {
+    const result = await pool.query(
+      'SELECT * FROM "usuarios" WHERE email = $1',
+      [email]
+    );
+    // Si rowCount > 0, significa que encontró un usuario
+    return result.rows.length > 0;
+  } catch (error) {
+    console.error("Error al verificar email:", error);
+    // Lanzamos el error para que el validador lo atrape
+    throw new Error('Error al validar el email en la base de datos');
+  }
 };

@@ -61,19 +61,36 @@ export const getUserByEmail = async (email: string): Promise<User | undefined> =
     console.log(error)
   }
 };
-
 export const updateUser = async (id: number, data: Partial<User>): Promise<User | undefined> => {
-try {
-    const { nombre, email, password, rol_id } = data;
-  const result = await pool.query(
-    'UPDATE usuarios SET nombre = $1, email = $2, password = $3, rol_id = $4 WHERE id_usuario = $5 RETURNING *',
-    [nombre, email, password, rol_id, id]
-  );
-  return result.rows[0];
-} catch (error) {
-  console.log(error)
-  
-}
+  try {
+    const fields = [];
+    const values = [];
+    let index = 1;
+
+    for (const [key, value] of Object.entries(data)) {
+      fields.push(`${key} = $${index}`);
+      values.push(value);
+      index++;
+    }
+
+    if (fields.length === 0) {
+      throw new Error('No hay campos para actualizar');
+    }
+
+    const query = `
+      UPDATE usuarios
+      SET ${fields.join(', ')}
+      WHERE id_usuario = $${index}
+      RETURNING *;
+    `;
+
+    values.push(id);
+
+    const result = await pool.query(query, values);
+    return result.rows[0];
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const deleteUser = async (id: number): Promise<void> => {

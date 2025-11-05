@@ -2,7 +2,7 @@ import * as userService from './userService';
 import { User } from '../models/IUser';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-
+import { generateToken } from '../helpers/jwt';
 
 export const register = async (userData: any): Promise<User> => {
   const salt = await bcrypt.genSalt(10);
@@ -30,13 +30,10 @@ export const login = async (email: string, pass: string): Promise<string> => {
     throw new Error('Credenciales inválidas');
   }
 
-  const payload = {
+  const token = generateToken({
     id: user.id,
     email: user.email,
-  };
-
-  const token = jwt.sign(payload, process.env.JWT_SECRET || 'TU_SECRET_KEY_PROVISORIA', {
-    expiresIn: '1h',
+    rol_id: user.rol_id, 
   });
 
   return token;

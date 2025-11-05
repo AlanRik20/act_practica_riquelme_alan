@@ -30,8 +30,8 @@ export const validateRegistration = (): (ValidationChain | ((req: Request, res: 
 
 // Reglas para el login
 export const validateLogin = (): (ValidationChain | ((req: Request, res: Response, next: NextFunction) => any))[] => [
-  body('nombre')
-    .notEmpty().withMessage('El nombre es requerido'),
+  body('email')
+    .isEmail().withMessage('El email es inválido'),
   body('password')
     .notEmpty().withMessage('La contraseña es requerida'),
   handleValidation

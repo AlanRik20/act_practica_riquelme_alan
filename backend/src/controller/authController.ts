@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { request, Request, Response } from "express";
 import * as authService from "../service/authService";
 
 export const register = async (req: Request, res: Response) => {
@@ -12,8 +12,8 @@ export const register = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
   try {
-    const { nombre, password } = req.body;  
-    const token = await authService.login(nombre, password);
+    const { email, password } = req.body;
+    const token = await authService.login(email, password);
 
     res.json({ token });
   } catch (error: any) {

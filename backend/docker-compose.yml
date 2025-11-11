@@ -1,0 +1,33 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: formotex_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: formotex
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+  
+
+  backend:
+    build: .
+    container_name: formotex_app
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "4020:3000"
+    environment:
+      DB_HOST: db
+      DB_USER: postgres
+      DB_PASSWORD: 123456
+      DB_DATABASE: formotex
+      DB_PORT: 5432
+
+volumes:
+  pgdata:

@@ -2,7 +2,7 @@ import pool from "../database/db";
 import { User } from "../models/IUser";
 
 export const createUser = async (data: Partial<User>): Promise<User | any> => {
-  const { nombre, email, password, rol_id } = data;
+  const { nombre, email, password, rol_id} = data;
   try {
     const result = await pool.query(
       "INSERT INTO usuarios (nombre, email, password, rol_id) VALUES ($1, $2, $3, $4) RETURNING *",

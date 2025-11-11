@@ -5,7 +5,7 @@ import { authorize } from "../middleware/authMiddleware";
 
 const authRoutes = Router();
 
-authRoutes.post("/register",authorize(1), validateRegistration(), register);
+authRoutes.post("/register", validateRegistration(), register);
 authRoutes.post("/login", validateLogin(), login);
 
 export default authRoutes;
